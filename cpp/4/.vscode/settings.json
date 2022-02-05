@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "limits": "cpp",
-        "iosfwd": "cpp",
-        "memory": "cpp",
-        "utility": "cpp"
-    }
-}
