@@ -26,11 +26,10 @@ int main(int argc, char * const argv[])
 
 	std::vector<int> crabs;
 
-	int crab, min = std::numeric_limits<int>::max(), max = std::numeric_limits<int>::min();
+	int crab, sum = 0;
 	while (input >> crab)
 	{
-		if (crab < min) min = crab;
-		if (crab > max) max = crab;
+		sum += crab;
 
 		crabs.push_back(crab);
 		if (input.peek() == ',')
@@ -39,23 +38,17 @@ int main(int argc, char * const argv[])
 		}
 	}
 
-	std::sort(crabs.begin(), crabs.end());
+	int mean_floor = std::floor(sum / static_cast<double>(crabs.size()));
+	int mean_ceil = std::ceil(sum / static_cast<double>(crabs.size()));
 
-	int min_distance = std::numeric_limits<int>::max();
-	for (int i = min; i <= max; ++i)
+	auto distance = [](int n){ return n * (n + 1) / 2; };
+
+	int sum_ceil = 0, sum_floor = 0;
+	for (auto crab : crabs)
 	{
-		int distance = 0;
-		for (auto crab : crabs)
-		{
-			auto n = std::abs(i - crab);
-			distance += n * (n + 1) / 2;
-		}
-
-		if (distance < min_distance)
-		{
-			min_distance = distance;
-		}
+		sum_ceil += distance(std::abs(mean_ceil - crab));
+		sum_floor += distance(std::abs(mean_floor - crab));
 	}
-	std::cout << "Minimal fuel required: " << min_distance << std::endl;
+	std::cout << "Minimal fuel required: " << std::min(sum_ceil, sum_floor) << std::endl;
 	return 0;
  }
